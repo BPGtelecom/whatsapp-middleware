@@ -7,7 +7,7 @@ import os
 # Inicializando o Flask
 app = Flask(__name__)
 
-# Configuração do Twilio - Pegando das variáveis de ambiente
+# Configuração do Twilio
 ACCOUNT_SID = os.getenv("ACCOUNT_SID")
 AUTH_TOKEN = os.getenv("AUTH_TOKEN")
 TWILIO_WHATSAPP_NUMBER = "whatsapp:+14155238886"
@@ -17,12 +17,13 @@ if not ACCOUNT_SID or not AUTH_TOKEN:
 
 twilio_client = Client(ACCOUNT_SID, AUTH_TOKEN)
 
-# Configuração da API OpenAI (ChatGPT) - Pegando das variáveis de ambiente
+# Configuração da API OpenAI (ChatGPT)
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 if not OPENAI_API_KEY:
     raise ValueError("Erro: OPENAI_API_KEY não configurado corretamente!")
 
 openai_client = openai.OpenAI(api_key=OPENAI_API_KEY)
+print(f"OPENAI_API_KEY carregada: {OPENAI_API_KEY[:5]}***")  # Exibe parte da chave para debug
 
 # Rota principal para verificar se o servidor está rodando
 @app.route("/")
@@ -41,9 +42,9 @@ def whatsapp_reply():
         if not msg_in:
             return "Nenhuma mensagem recebida.", 400
 
-        # Enviar a mensagem para o ChatGPT (API atualizada)
+        # Enviar a mensagem para o ChatGPT (Mudança para GPT-3.5 caso GPT-4 não esteja disponível)
         response = openai_client.chat.completions.create(
-            model="gpt-4",
+            model="gpt-3.5-turbo",  # Alterado para um modelo acessível
             messages=[
                 {"role": "system", "content": "Você é um assistente da BPG Telecom ajudando clientes no WhatsApp."},
                 {"role": "user", "content": msg_in}
@@ -71,5 +72,3 @@ def whatsapp_reply():
 # Rodando o aplicativo no Render
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
-
-
