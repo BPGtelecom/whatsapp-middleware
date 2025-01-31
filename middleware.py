@@ -42,9 +42,9 @@ def whatsapp_reply():
         if not msg_in:
             return "Nenhuma mensagem recebida.", 400
 
-        # Enviar a mensagem para o ChatGPT (Mudança para GPT-3.5 caso GPT-4 não esteja disponível)
+        # Usar um modelo mais barato para evitar erro de cota
         response = openai_client.chat.completions.create(
-            model="gpt-3.5-turbo",  # Alterado para um modelo acessível
+            model="gpt-3.5-turbo",  # Alterado para um modelo mais acessível
             messages=[
                 {"role": "system", "content": "Você é um assistente da BPG Telecom ajudando clientes no WhatsApp."},
                 {"role": "user", "content": msg_in}
