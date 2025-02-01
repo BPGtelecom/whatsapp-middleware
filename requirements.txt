@@ -1,5 +1,4 @@
 openai>=0.28
 flask
-sqlite3
 twilio
 gunicorn
