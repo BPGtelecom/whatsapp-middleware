@@ -38,17 +38,22 @@ def whatsapp_reply():
 
         print(f"Mensagem recebida de {sender}: {msg_in}")
 
-        if "plano de internet" in msg_in or "valores do plano" in msg_in:
+        # Lógica para planos de internet
+        if any(word in msg_in for word in ["plano", "internet", "contratar internet", "quero internet"]):
             reply = "Para te informar os valores do plano de internet, preciso do seu CEP ou endereço. Por favor, informe para que eu possa verificar os planos disponíveis na sua região."
         
         elif any(city in msg_in for city in ["poá", "itaquaquecetuba"]):
-            reply = "O seu endereço corresponde a nossa área de cobertura. Estou transferindo você para um de nossos atendentes. Aguarde um momento, por favor."
+            reply = "O seu endereço está na nossa área de cobertura. Estou transferindo você para um de nossos atendentes para concluir a contratação. Aguarde um momento."
         
-        elif "problema técnico" in msg_in or "sem sinal" in msg_in:
+        elif "cidade" in msg_in or "suzano" in msg_in or "fora" in msg_in:
+            reply = "No momento, oferecemos serviços apenas para Poá e Itaquaquecetuba. Caso tenha interesse, podemos avisá-lo quando expandirmos para sua região."
+        
+        # Lógica para suporte técnico
+        elif any(word in msg_in for word in ["problema técnico", "sem sinal", "conexão ruim", "internet caiu"]):
             reply = "Vamos tentar resolver o seu problema. Verifique se há uma luz vermelha acesa nos seus equipamentos."
         
         elif "luz vermelha" in msg_in:
-            reply = "Se há uma luz vermelha, verifique se todos os cabos estão corretamente conectados."
+            reply = "Se há uma luz vermelha, verifique se todos os cabos estão corretamente conectados ao equipamento."
         
         elif "cabos conectados" in msg_in:
             reply = "Já que todos os cabos estão conectados corretamente e ainda há luz vermelha, estou transferindo você para o suporte técnico. Aguarde um momento."
